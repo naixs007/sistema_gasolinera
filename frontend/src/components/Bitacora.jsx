@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 
 const Bitacora = () => {
   const [registros] = useState([
@@ -47,6 +47,8 @@ const Bitacora = () => {
 
   const [busquedaLibre, setBusquedaLibre] = useState("");
   const [filtroAtributo, setFiltroAtributo] = useState("todos");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const registrosFiltrados = useMemo(() => {
     return registros.filter((registro) => {
@@ -74,6 +76,19 @@ const Bitacora = () => {
     });
   }, [busquedaLibre, filtroAtributo]);
 
+  // Reset a primera página cuando cambian los filtros
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [busquedaLibre, filtroAtributo]);
+
+  // Calcular paginación
+  const totalPages = Math.ceil(registrosFiltrados.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const registrosPaginados = registrosFiltrados.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
+
   const getColorAccion = (accion) => {
     const colores = {
       CREATE: { bg: "#dcfce7", text: "#166534" },
@@ -87,6 +102,7 @@ const Bitacora = () => {
   const limpiarFiltros = () => {
     setBusquedaLibre("");
     setFiltroAtributo("todos");
+    setCurrentPage(1);
   };
 
   return (
@@ -319,8 +335,8 @@ const Bitacora = () => {
                 </tr>
               </thead>
               <tbody>
-                {registrosFiltrados.length > 0 ? (
-                  registrosFiltrados.map((registro, idx) => {
+                {registrosPaginados.length > 0 ? (
+                  registrosPaginados.map((registro, idx) => {
                     const colorAccion = getColorAccion(registro.accion);
                     return (
                       <tr
@@ -458,23 +474,175 @@ const Bitacora = () => {
             </table>
           </div>
 
+          {/* PAGINACIÓN */}
+          <div
+            style={{
+              padding: "1.5rem",
+              backgroundColor: "#f8fafc",
+              borderTop: "1px solid #e2e8f0",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <nav aria-label="Page navigation">
+              <ul
+                style={{
+                  display: "flex",
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  gap: "0.25rem",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                }}
+              >
+                {/* Botón Anterior */}
+                <li
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      border: "1px solid #dee2e6",
+                      backgroundColor: currentPage === 1 ? "#e9ecef" : "#fff",
+                      color: currentPage === 1 ? "#6c757d" : "#0f172a",
+                      cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                      borderRadius: "0.375rem",
+                      fontSize: "0.875rem",
+                      fontWeight: "600",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentPage !== 1) {
+                        e.target.style.backgroundColor = "#0f172a";
+                        e.target.style.color = "#fff";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentPage !== 1) {
+                        e.target.style.backgroundColor = "#fff";
+                        e.target.style.color = "#0f172a";
+                      }
+                    }}
+                  >
+                    ← Anterior
+                  </button>
+                </li>
+
+                {/* Números de página */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <li key={page} style={{ display: "inline-block" }}>
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        style={{
+                          padding: "0.5rem 0.75rem",
+                          border:
+                            page === currentPage
+                              ? "2px solid #0f172a"
+                              : "1px solid #dee2e6",
+                          backgroundColor:
+                            page === currentPage ? "#0f172a" : "#fff",
+                          color: page === currentPage ? "#fff" : "#0f172a",
+                          cursor: "pointer",
+                          borderRadius: "0.375rem",
+                          fontSize: "0.875rem",
+                          fontWeight: page === currentPage ? "700" : "600",
+                          minWidth: "2.5rem",
+                          transition: "all 0.2s",
+                        }}
+                        onMouseEnter={(e) => {
+                          if (page !== currentPage) {
+                            e.target.style.backgroundColor = "#f1f5f9";
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (page !== currentPage) {
+                            e.target.style.backgroundColor = "#fff";
+                          }
+                        }}
+                      >
+                        {page}
+                      </button>
+                    </li>
+                  ),
+                )}
+
+                {/* Botón Siguiente */}
+                <li
+                  style={{
+                    display: "inline-block",
+                  }}
+                >
+                  <button
+                    onClick={() =>
+                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                    style={{
+                      padding: "0.5rem 0.75rem",
+                      border: "1px solid #dee2e6",
+                      backgroundColor:
+                        currentPage === totalPages ? "#e9ecef" : "#fff",
+                      color: currentPage === totalPages ? "#6c757d" : "#0f172a",
+                      cursor:
+                        currentPage === totalPages ? "not-allowed" : "pointer",
+                      borderRadius: "0.375rem",
+                      fontSize: "0.875rem",
+                      fontWeight: "600",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (currentPage !== totalPages) {
+                        e.target.style.backgroundColor = "#0f172a";
+                        e.target.style.color = "#fff";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentPage !== totalPages) {
+                        e.target.style.backgroundColor = "#fff";
+                        e.target.style.color = "#0f172a";
+                      }
+                    }}
+                  >
+                    Siguiente →
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+
           {/* FOOTER */}
           <div
             style={{
               padding: "1rem",
-              backgroundColor: "#f8fafc",
+              backgroundColor: "#f1f5f9",
               borderTop: "1px solid #e2e8f0",
               fontSize: "0.8rem",
               color: "#475569",
+              textAlign: "center",
             }}
           >
-            Mostrando{" "}
+            Página{" "}
             <span style={{ fontWeight: "700", color: "#0f172a" }}>
-              {registrosFiltrados.length}
+              {currentPage}
             </span>{" "}
             de{" "}
             <span style={{ fontWeight: "700", color: "#0f172a" }}>
-              {registros.length}
+              {totalPages}
+            </span>{" "}
+            | Mostrando{" "}
+            <span style={{ fontWeight: "700", color: "#0f172a" }}>
+              {registrosPaginados.length}
+            </span>{" "}
+            de{" "}
+            <span style={{ fontWeight: "700", color: "#0f172a" }}>
+              {registrosFiltrados.length}
             </span>{" "}
             registros
           </div>
