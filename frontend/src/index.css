@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-}
 
 body {
   margin: 0;
@@ -145,7 +144,7 @@ code {
 
 /* Efecto hover muy sutil */
 .grid-row:hover {
-  background-color: #dee8f1;
+  background-color: #f9fafb;
 }
 
 /* Quitamos el borde a la última fila */
@@ -204,7 +203,7 @@ code {
 }
 
 .page-item .page-link:hover {
-  background-color: #dee8f1;
+  background-color: #f3f4f6;
 }
 
 .page-item.disabled .page-link {
@@ -215,7 +214,7 @@ code {
 }
 
 .page-item.active .page-link {
-  background-color: #dee8f1;
+  background-color: #f3f4f6;
   color: #111827;
   border-color: #d1d5db;
 }
