@@ -37,7 +37,8 @@ const Bitacora = () => {
       usuario: "Bryan A. (Gerente)",
       accion: "UPDATE",
       modulo_afectado: "Límites de Consumo",
-      descripcion: "Aumentó el límite mensual del cliente corporativo (CI: 456789).",
+      descripcion:
+        "Aumentó el límite mensual del cliente corporativo (CI: 456789).",
       direccion_ip: "192.168.1.10",
       dispositivo: "App Móvil (iOS)",
       creado_en: "2026-03-29T15:12:30",
@@ -50,7 +51,7 @@ const Bitacora = () => {
   const registrosFiltrados = useMemo(() => {
     return registros.filter((registro) => {
       const textoLibre = busquedaLibre.toLowerCase();
-      const coincideTexto = 
+      const coincideTexto =
         registro.id.toLowerCase().includes(textoLibre) ||
         registro.usuario.toLowerCase().includes(textoLibre) ||
         registro.accion.toLowerCase().includes(textoLibre) ||
@@ -59,10 +60,11 @@ const Bitacora = () => {
         registro.direccion_ip.includes(textoLibre) ||
         registro.dispositivo.toLowerCase().includes(textoLibre);
 
-      const coincideAtributo = 
+      const coincideAtributo =
         filtroAtributo === "todos" ||
         (filtroAtributo === "web" && registro.dispositivo.includes("Web")) ||
-        (filtroAtributo === "movil" && registro.dispositivo.includes("Móvil")) ||
+        (filtroAtributo === "movil" &&
+          registro.dispositivo.includes("Móvil")) ||
         (filtroAtributo === "create" && registro.accion === "CREATE") ||
         (filtroAtributo === "update" && registro.accion === "UPDATE") ||
         (filtroAtributo === "delete" && registro.accion === "DELETE") ||
@@ -88,11 +90,24 @@ const Bitacora = () => {
   };
 
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f8fafc", padding: "1rem" }}>
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "#f8fafc",
+        padding: "1rem",
+      }}
+    >
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
         {/* HEADER */}
         <div style={{ marginBottom: "1.5rem" }}>
-          <h1 style={{ fontSize: "1.875rem", fontWeight: "700", color: "#0f172a", marginBottom: "0.5rem" }}>
+          <h1
+            style={{
+              fontSize: "1.875rem",
+              fontWeight: "700",
+              color: "#0f172a",
+              marginBottom: "0.5rem",
+            }}
+          >
             📊 Bitácora de Auditoría
           </h1>
           <p style={{ color: "#64748b", fontSize: "0.9rem" }}>
@@ -101,14 +116,41 @@ const Bitacora = () => {
         </div>
 
         {/* CARD PRINCIPAL */}
-        <div style={{ backgroundColor: "#fff", borderRadius: "0.75rem", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", overflow: "hidden" }}>
-          
+        <div
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: "0.75rem",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+            overflow: "hidden",
+          }}
+        >
           {/* FILTROS */}
-          <div style={{ padding: "1rem", backgroundColor: "#f1f5f9", borderBottom: "2px solid #e2e8f0" }}>
-            <h3 style={{ fontSize: "0.75rem", fontWeight: "700", color: "#0f172a", marginBottom: "0.75rem", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+          <div
+            style={{
+              padding: "1rem",
+              backgroundColor: "#f1f5f9",
+              borderBottom: "2px solid #e2e8f0",
+            }}
+          >
+            <h3
+              style={{
+                fontSize: "0.75rem",
+                fontWeight: "700",
+                color: "#0f172a",
+                marginBottom: "0.75rem",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+              }}
+            >
               🔍 Filtros
             </h3>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "0.75rem" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "0.75rem",
+              }}
+            >
               {/* Búsqueda libre */}
               <input
                 type="text"
@@ -121,10 +163,10 @@ const Bitacora = () => {
                   borderRadius: "0.5rem",
                   fontSize: "0.875rem",
                   boxSizing: "border-box",
-                  fontFamily: "inherit"
+                  fontFamily: "inherit",
                 }}
               />
-              
+
               {/* Select por atributo */}
               <select
                 value={filtroAtributo}
@@ -135,7 +177,7 @@ const Bitacora = () => {
                   borderRadius: "0.5rem",
                   fontSize: "0.875rem",
                   boxSizing: "border-box",
-                  fontFamily: "inherit"
+                  fontFamily: "inherit",
                 }}
               >
                 <option value="todos">Todos los atributos</option>
@@ -163,7 +205,7 @@ const Bitacora = () => {
                   cursor: "pointer",
                   fontSize: "0.875rem",
                   fontWeight: "600",
-                  fontFamily: "inherit"
+                  fontFamily: "inherit",
                 }}
               >
                 ✕ Limpiar
@@ -176,14 +218,104 @@ const Bitacora = () => {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ backgroundColor: "#0f172a", color: "#fff" }}>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>ID</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>Usuario</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>Acción</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em", minWidth: "150px" }}>Módulo</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em", minWidth: "200px" }}>Descripción</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>Origen (IP)</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>Dispositivo</th>
-                  <th style={{ padding: "0.75rem", textAlign: "left", fontSize: "0.75rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.05em" }}>Fecha/Hora</th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    ID
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Usuario
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Acción
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      minWidth: "150px",
+                    }}
+                  >
+                    Módulo
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                      minWidth: "200px",
+                    }}
+                  >
+                    Descripción
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Origen (IP)
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Dispositivo
+                  </th>
+                  <th
+                    style={{
+                      padding: "0.75rem",
+                      textAlign: "left",
+                      fontSize: "0.75rem",
+                      fontWeight: "700",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.05em",
+                    }}
+                  >
+                    Fecha/Hora
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -197,36 +329,112 @@ const Bitacora = () => {
                           borderBottom: "1px solid #e2e8f0",
                           backgroundColor: idx % 2 === 0 ? "#fff" : "#f8fafc",
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#f1f5f9")}
-                        onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = idx % 2 === 0 ? "#fff" : "#f8fafc")}
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.backgroundColor = "#f1f5f9")
+                        }
+                        onMouseLeave={(e) =>
+                          (e.currentTarget.style.backgroundColor =
+                            idx % 2 === 0 ? "#fff" : "#f8fafc")
+                        }
                       >
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", fontWeight: "600", color: "#64748b" }}>
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            fontWeight: "600",
+                            color: "#64748b",
+                          }}
+                        >
                           {registro.id}
                         </td>
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", fontWeight: "600", color: "#0f172a" }}>
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            fontWeight: "600",
+                            color: "#0f172a",
+                          }}
+                        >
                           {registro.usuario}
                         </td>
                         <td style={{ padding: "0.75rem" }}>
-                          <span style={{ display: "inline-block", backgroundColor: colorAccion.bg, color: colorAccion.text, padding: "0.3rem 0.6rem", borderRadius: "0.375rem", fontSize: "0.7rem", fontWeight: "700" }}>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              backgroundColor: colorAccion.bg,
+                              color: colorAccion.text,
+                              padding: "0.3rem 0.6rem",
+                              borderRadius: "0.375rem",
+                              fontSize: "0.7rem",
+                              fontWeight: "700",
+                            }}
+                          >
                             {registro.accion}
                           </span>
                         </td>
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", color: "#0f172a" }}>
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            color: "#0f172a",
+                          }}
+                        >
                           {registro.modulo_afectado}
                         </td>
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", color: "#475569", maxWidth: "250px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={registro.descripcion}>
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            color: "#475569",
+                            maxWidth: "250px",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                          title={registro.descripcion}
+                        >
                           {registro.descripcion}
                         </td>
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", fontFamily: "monospace", color: "#4f46e5", fontWeight: "500" }}>
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            fontFamily: "monospace",
+                            color: "#4f46e5",
+                            fontWeight: "500",
+                          }}
+                        >
                           {registro.direccion_ip}
                         </td>
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", fontWeight: "600", color: "#0f172a" }}>
-                          {registro.dispositivo.includes("Móvil") ? "📱 Móvil" : "🌐 Web"}
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            fontWeight: "600",
+                            color: "#0f172a",
+                          }}
+                        >
+                          {registro.dispositivo.includes("Móvil")
+                            ? "📱 Móvil"
+                            : "🌐 Web"}
                         </td>
-                        <td style={{ padding: "0.75rem", fontSize: "0.8rem", color: "#475569" }}>
-                          <div>{new Date(registro.creado_en).toLocaleDateString("es-BO")}</div>
+                        <td
+                          style={{
+                            padding: "0.75rem",
+                            fontSize: "0.8rem",
+                            color: "#475569",
+                          }}
+                        >
+                          <div>
+                            {new Date(registro.creado_en).toLocaleDateString(
+                              "es-BO",
+                            )}
+                          </div>
                           <div style={{ fontSize: "0.7rem", color: "#94a3b8" }}>
-                            {new Date(registro.creado_en).toLocaleTimeString("es-BO", { hour: "2-digit", minute: "2-digit" })}
+                            {new Date(registro.creado_en).toLocaleTimeString(
+                              "es-BO",
+                              { hour: "2-digit", minute: "2-digit" },
+                            )}
                           </div>
                         </td>
                       </tr>
@@ -234,7 +442,15 @@ const Bitacora = () => {
                   })
                 ) : (
                   <tr>
-                    <td colSpan="8" style={{ padding: "2rem", textAlign: "center", color: "#94a3b8", fontSize: "0.875rem" }}>
+                    <td
+                      colSpan="8"
+                      style={{
+                        padding: "2rem",
+                        textAlign: "center",
+                        color: "#94a3b8",
+                        fontSize: "0.875rem",
+                      }}
+                    >
                       No hay registros que coincidan con los filtros aplicados.
                     </td>
                   </tr>
@@ -244,8 +460,24 @@ const Bitacora = () => {
           </div>
 
           {/* FOOTER */}
-          <div style={{ padding: "1rem", backgroundColor: "#f8fafc", borderTop: "1px solid #e2e8f0", fontSize: "0.8rem", color: "#475569" }}>
-            Mostrando <span style={{ fontWeight: "700", color: "#0f172a" }}>{registrosFiltrados.length}</span> de <span style={{ fontWeight: "700", color: "#0f172a" }}>{registros.length}</span> registros
+          <div
+            style={{
+              padding: "1rem",
+              backgroundColor: "#f8fafc",
+              borderTop: "1px solid #e2e8f0",
+              fontSize: "0.8rem",
+              color: "#475569",
+            }}
+          >
+            Mostrando{" "}
+            <span style={{ fontWeight: "700", color: "#0f172a" }}>
+              {registrosFiltrados.length}
+            </span>{" "}
+            de{" "}
+            <span style={{ fontWeight: "700", color: "#0f172a" }}>
+              {registros.length}
+            </span>{" "}
+            registros
           </div>
         </div>
       </div>
