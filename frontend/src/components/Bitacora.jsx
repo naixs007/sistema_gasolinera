@@ -6,20 +6,20 @@ const Bitacora = () => {
       id: "1001",
       usuario: "Wigmar B. (Admin)",
       accion: "UPDATE",
-      modulo_afectado: "Config. de Precios",
+      modulo_afectado: "Configuración de Precios",
       descripcion: "Actualizó el precio base del Diésel a 3.74 Bs.",
       direccion_ip: "192.168.1.15",
-      dispositivo: "Panel Web",
+      dispositivo: "Panel Web (Windows)",
       creado_en: "2026-03-29T14:30:00",
     },
     {
       id: "1002",
       usuario: "Melissa S. (Secretaria)",
       accion: "CREATE",
-      modulo_afectado: "Gestión Personal",
-      descripcion: "Registró en el sistema al nuevo guardia.",
+      modulo_afectado: "Gestión de Personal",
+      descripcion: "Registró en el sistema al nuevo guardia de seguridad.",
       direccion_ip: "192.168.1.20",
-      dispositivo: "Panel Web",
+      dispositivo: "Panel Web (Windows)",
       creado_en: "2026-03-29T14:45:00",
     },
     {
@@ -29,30 +29,38 @@ const Bitacora = () => {
       modulo_afectado: "Autenticación",
       descripcion: "Inició sesión para apertura de turno.",
       direccion_ip: "192.168.1.12",
-      dispositivo: "App Móvil",
+      dispositivo: "App Móvil (Android)",
       creado_en: "2026-03-29T15:00:00",
     },
     {
       id: "1004",
       usuario: "Bryan A. (Gerente)",
       accion: "UPDATE",
-      modulo_afectado: "Límites Consumo",
-      descripcion: "Aumentó límite mensual corporativo (CI: 456789).",
+      modulo_afectado: "Límites de Consumo",
+      descripcion:
+        "Aumentó el límite mensual del cliente corporativo (CI: 456789).",
       direccion_ip: "192.168.1.10",
-      dispositivo: "App Móvil",
+      dispositivo: "App Móvil (iOS)",
       creado_en: "2026-03-29T15:12:30",
     },
   ]);
 
-  const handlePageClick = (e) => {
-    e.preventDefault();
+  const getColorAccion = (accion) => {
+    switch (accion) {
+      case "CREATE":
+        return "accion-create";
+      case "UPDATE":
+        return "accion-update";
+      case "DELETE":
+        return "accion-delete";
+      default:
+        return "accion-login";
+    }
   };
 
-  const getDeviceType = (dispositivo) => {
-    if (dispositivo.includes("Móvil")) return "📱 Móvil";
-    if (dispositivo.includes("Web") || dispositivo.includes("Windows"))
-      return "🌐 Web";
-    return dispositivo.split(" ")[0];
+  // Función para evitar que los enlaces de paginación recarguen la página
+  const handlePageClick = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -61,71 +69,94 @@ const Bitacora = () => {
         {/* Encabezado */}
         <div className="bitacora-header">
           <h2>Bitácora</h2>
-
-          {/* Botón de PDF oculto/comentado a petición */}
-          {/* <button className="btn-detalles" style={{ backgroundColor: '#4f46e5', color: 'white', border: 'none', padding: '0.5rem 1rem', borderRadius: '0.375rem', cursor: 'pointer' }}>
-            Descargar PDF
-          </button> 
-          */}
+          {/*<button
+            className="btn-detalles"
+            style={{
+              backgroundColor: "#4f46e5",
+              color: "white",
+              border: "none",
+              padding: "0.5rem 1rem",
+            }}
+          >
+            Descargar Reporte
+          </button>*/}
         </div>
 
-        {/* CONTENEDOR GRID */}
+        {/* CONTENEDOR GRID (Reemplaza a la tabla HTML) */}
         <div className="grid-table">
-          {/* Cabecera calcada de la imagen */}
+          {/* Cabecera del Grid */}
           <div className="grid-header">
             <div>ID</div>
             <div>Usuario</div>
             <div>Acción</div>
-            <div>Módulo</div>
-            <div>Descripción</div>
-            <div>Fecha</div>
-            <div>Dispositivo</div>
+            <div>Módulo Afectado</div>
+            <div>Descripción de la Actividad</div>
+            <div>Origen / Dispositivo</div>
+            <div>Fecha y Hora</div>
           </div>
 
-          {/* Filas */}
+          {/* Filas del Grid */}
           {registros.map((registro) => (
             <div className="grid-row" key={registro.id}>
-              <div>{registro.id}</div>
-
-              {/* Texto principal oscuro y negrita (como el producto en la imagen) */}
-              <div className="text-main">{registro.usuario}</div>
-
-              <div>{registro.accion}</div>
-
-              <div>{registro.modulo_afectado}</div>
-
-              <div style={{ paddingRight: "1rem" }}>{registro.descripcion}</div>
-
-              <div>
-                <div>{new Date(registro.creado_en).toLocaleDateString()}</div>
-                <div style={{ fontSize: "0.75rem" }}>
-                  {new Date(registro.creado_en).toLocaleTimeString()}
-                </div>
+              <div
+                style={{
+                  fontWeight: "600",
+                  color: "#6b7280",
+                  fontSize: "0.875rem",
+                }}
+              >
+                {registro.id}
               </div>
 
-              {/* Dispositivo e IP */}
+              <div style={{ fontWeight: "600", color: "#111827" }}>
+                {registro.usuario}
+              </div>
+
               <div>
-                <div style={{ fontWeight: "600" }}>
-                  {getDeviceType(registro.dispositivo)}
-                </div>
+                <span
+                  className={`badge-accion ${getColorAccion(registro.accion)}`}
+                >
+                  {registro.accion}
+                </span>
+              </div>
+
+              <div>
+                <span className="badge-tabla">{registro.modulo_afectado}</span>
+              </div>
+
+              <div style={{ color: "#374151", paddingRight: "1rem" }}>
+                {registro.descripcion}
+              </div>
+
+              <div>
                 <div
                   style={{
-                    fontSize: "0.75rem",
-                    color: "#4f46e5",
                     fontFamily: "monospace",
+                    color: "#4f46e5",
+                    fontWeight: "500",
                   }}
                 >
                   {registro.direccion_ip}
+                </div>
+                <div className="text-xs-muted">{registro.dispositivo}</div>
+              </div>
+
+              <div>
+                <div style={{ fontWeight: "500", color: "#111827" }}>
+                  {new Date(registro.creado_en).toLocaleDateString()}
+                </div>
+                <div className="text-xs-muted">
+                  {new Date(registro.creado_en).toLocaleTimeString()}
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* PAGINACIÓN */}
+        {/* PAGINACIÓN INTEGRADA */}
         <div className="pagination-container">
-          <nav aria-label="Page navigation">
-            <ul className="pagination">
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-center">
               <li className="page-item disabled">
                 <a className="page-link" href="#!" onClick={handlePageClick}>
                   Anterior
