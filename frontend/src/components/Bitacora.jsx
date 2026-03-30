@@ -386,12 +386,11 @@ const Bitacora = () => {
                             padding: "0.75rem",
                             fontSize: "0.8rem",
                             color: "#475569",
-                            maxWidth: "250px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
+                            maxWidth: "400px",
+                            whiteSpace: "normal",
+                            wordWrap: "break-word",
+                            overflowWrap: "break-word",
                           }}
-                          title={registro.descripcion}
                         >
                           {registro.descripcion}
                         </td>
